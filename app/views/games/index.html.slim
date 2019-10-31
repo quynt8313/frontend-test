@@ -6,8 +6,8 @@ table.uk-table data-controller="games"
           = image_tag game.home_team_logo.url
           = image_tag game.away_team_logo.url
         td width='20%'
-          p = game.title
-          p = game.game_time
+          p.title = game.title
+          p.time = game.game_time.strftime("%b %d, %Y  %H:%M")
         td width='10%' 
           p = "#{game.reach}M" 
           p = 'Reach'     
@@ -17,12 +17,24 @@ table.uk-table data-controller="games"
         td width='10%'
           p = game.channel
           p = 'Channel'
-        td width='20%'
-          = game.price_per_minute
+        td.price width='20%'
+          span
+            = number_to_currency(game.price_per_minute, precision: 0)
+          |  /min
         td 
-          button data-action="click->games#plus" data-index="#{index}" data-id="#{game.id}"
-            | +
-          span data-target="games.output"
-            = game.minutes_booked
-          button data-action="click->games#minus" data-index="#{index}" data-id="#{game.id}"
-            | -
+          .minutes_booked
+            button data-action="click->games#minus" data-index="#{index}" data-id="#{game.id}"
+              | -
+            span data-target="games.output" data-price="#{game.price_per_minute}"
+              = game.minutes_booked
+            button data-action="click->games#plus" data-index="#{index}" data-id="#{game.id}"
+              | +
+    tr
+      td
+      td
+      td
+      td
+      td
+      td.total
+        | Total:
+      td.total data-target="games.total"
